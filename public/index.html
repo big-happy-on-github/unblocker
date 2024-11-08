@@ -85,48 +85,26 @@
         let emulated = false;
         
         async function emulate(url) {
+            const proxyUrl = `/.netlify/functions/fetch-site?url=${encodeURIComponent(url)}`;
+            
             try {
-                const response = await fetch(url, { method: 'HEAD' });
+                const response = await fetch(proxyUrl);
                 
                 if (!response.ok) {
-                    // Check specific response status codes for tailored messages
-                    switch (response.status) {
-                        case 404:
-                            alert(`${url} could not be found (404 Not Found). Please check the URL.`);
-                            break;
-                        case 403:
-                            alert(`${url} access is forbidden (403 Forbidden). You might not have permission to access this site.`);
-                            break;
-                        case 500:
-                            alert(`${url} encountered a server error (500 Server Error). Try again later.`);
-                            break;
-                        default:
-                            alert(`${url} could not be loaded. Status: ${response.status} ${response.statusText}`);
-                    }
+                    alert(`Failed to load ${url}: ${response.status} ${response.statusText}`);
                     return;
                 }
-        
-                emulated = true;
-                let iframe = document.createElement('iframe');
-                iframe.src = url;
+                
+                const content = await response.text();
+                const iframe = document.createElement('iframe');
+                iframe.srcdoc = content;
                 iframe.width = "100%";
                 iframe.height = "100%";
                 document.body.appendChild(iframe);
-                iframe.onload = function () {
-                    try {
-                        const _ = iframe.contentWindow.location.href;
-                    } catch {
-                        alert(`${url} does not allow emulating due to cross-origin restrictions.`);
-                    }
-                };
                 document.getElementById("settings").style.display = "none";
                 
             } catch (error) {
-                if (error instanceof TypeError) {
-                    alert("Network error or CORS restriction. Unable to load the site.");
-                } else {
-                    alert(`An unexpected error occurred: ${error.message}`);
-                }
+                alert(`An unexpected error occurred: ${error.message}`);
             }
         }
 
