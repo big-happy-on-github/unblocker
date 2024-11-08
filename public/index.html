@@ -75,7 +75,7 @@
 </head>
 <body>
     <div id="settings">
-        <h1>iframe site emulator by not liam</h1>
+        <h1>embed site emulator by not liam</h1>
         <label for="site">please enter the url of the site you want to emulate: </label>
         <input type="url" id="site" placeholder="https://example.com">
         <button onclick="emulate(document.getElementById('site').value)">emulate</button>
@@ -85,44 +85,15 @@
         let emulated = false;
         
         async function emulate(url) {
-            try {
-                const response = await fetch(url, { method: 'HEAD' });
-                
-                if (!response.ok) {
-                    // Check specific response status codes for tailored messages
-                    switch (response.status) {
-                        case 404:
-                            alert(`${url} could not be found (404 Not Found). Please check the URL.`);
-                            break;
-                        case 403:
-                            alert(`${url} access is forbidden (403 Forbidden). You might not have permission to access this site.`);
-                            break;
-                        case 500:
-                            alert(`${url} encountered a server error (500 Server Error). Try again later.`);
-                            break;
-                        default:
-                            alert(`${url} could not be loaded. Status: ${response.status} ${response.statusText}`);
-                    }
-                    return;
-                }
-        
-                emulated = true;
-                let iframe = document.createElement('iframe');
-                iframe.src = url;
-                iframe.width = window.innerWidth;
-                iframe.height = window.innerHeight;
-                document.body.appendChild(iframe);
-                document.getElementById("settings").style.display = "none";
-                
-            } catch (error) {
-                if (error instanceof TypeError) {
-                    alert("Network error or CORS restriction. Unable to load the site.");
-                } else {
-                    alert(`An unexpected error occurred: ${error.message}`);
-                }
-            }
+            emulated = true;
+            let embed = document.createElement('embed');
+            embed.src = url;
+            embed.width = window.innerWidth;
+            embed.height = window.innerHeight;
+            document.body.appendChild(embed);
+            document.getElementById("settings").style.display = "none";
         }
-
+        
         document.addEventListener('keyup', function(event) {
             if (event.keyCode === 13 && emulated) {
                 event.preventDefault();
