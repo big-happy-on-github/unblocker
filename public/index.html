@@ -88,6 +88,13 @@
             iframe.width = "100%";
             iframe.height = "100%";
             document.body.appendChild(iframe);
+            iframe.onload = function () {
+                try {
+                    const _ = iframe.contentWindow.location.href;
+                } catch {
+                    alert(`${url} does not allow emulating`);
+                }
+            }
             document.getElementById("settings").style.display = "none";
         }
         
