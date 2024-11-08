@@ -98,6 +98,11 @@
                     alert(`${url} does not allow emulating`);
                 }
             }
+            iframe.onerror = function () {
+                console.error("Failed to load the site.");
+                alert("the site could not be loaded. Please check the url or try another site");
+                iframe.remove();
+            };
             document.getElementById("settings").style.display = "none";
         }
         
