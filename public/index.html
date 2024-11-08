@@ -82,7 +82,10 @@
     </div>
 
     <script>
+        let emulated = false;
+        
         function emulate(url) {
+            emulated = true;
             let iframe = document.createElement('iframe');
             iframe.src = url;
             iframe.width = "100%";
@@ -99,7 +102,7 @@
         }
         
         document.addEventListener('keyup', function(event) {
-            if (event.keyCode === 13) {
+            if (event.keyCode === 13 && emulated) {
                 event.preventDefault();
                 emulate(document.getElementById("site").value);
             }
