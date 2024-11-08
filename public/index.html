@@ -112,13 +112,6 @@
                 iframe.width = window.innerWidth;
                 iframe.height = window.innerHeight;
                 document.body.appendChild(iframe);
-                iframe.onload = function () {
-                    try {
-                        const _ = iframe.contentWindow.location.href;
-                    } catch {
-                        alert(`${url} does not allow emulating due to cross-origin restrictions.`);
-                    }
-                };
                 document.getElementById("settings").style.display = "none";
                 
             } catch (error) {
