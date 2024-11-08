@@ -85,42 +85,33 @@
         let emulated = false;
         
         async function emulate(url) {
-            try {
-                const response = await fetch(url, { method: 'HEAD' });
-                
-                if (!response.ok) {
-                    // Check specific response status codes for tailored messages
-                    switch (response.status) {
-                        case 404:
-                            alert(`${url} could not be found (404 Not Found). Please check the URL.`);
-                            break;
-                        case 403:
-                            alert(`${url} access is forbidden (403 Forbidden). You might not have permission to access this site.`);
-                            break;
-                        case 500:
-                            alert(`${url} encountered a server error (500 Server Error). Try again later.`);
-                            break;
-                        default:
-                            alert(`${url} could not be loaded. Status: ${response.status} ${response.statusText}`);
-                    }
-                    return;
-                }
-        
-                emulated = true;
-                let iframe = document.createElement('iframe');
-                iframe.src = url;
-                iframe.width = window.innerWidth;
-                iframe.height = window.innerHeight;
-                document.body.appendChild(iframe);
-                document.getElementById("settings").style.display = "none";
-                
-            } catch (error) {
-                if (error instanceof TypeError) {
-                    alert("Network error or CORS restriction. Unable to load the site.");
-                } else {
-                    alert(`An unexpected error occurred: ${error.message}`);
-                }
-            }
+            emulate = true;
+            // Create a container div with the specified styles
+            const containerDiv = document.createElement('div');
+            containerDiv.style.left = '0';
+            containerDiv.style.width = '100%';
+            containerDiv.style.height = '0';
+            containerDiv.style.position = 'relative';
+            containerDiv.style.paddingBottom = '56.25%';
+            
+            // Create the iframe with the specified attributes
+            const iframe = document.createElement('iframe');
+            iframe.src = url;
+            iframe.style.top = '0';
+            iframe.style.left = '0';
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.style.position = 'absolute';
+            iframe.style.border = '0';
+            iframe.allowFullscreen = true;
+            iframe.scrolling = 'yes';
+            iframe.allow = 'accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+            
+            // Append the iframe to the container div
+            containerDiv.appendChild(iframe);
+            
+            // Append the container div to the body or any other element on the page
+            document.body.appendChild(containerDiv);
         }
 
         document.addEventListener('keyup', function(event) {
