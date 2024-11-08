@@ -109,8 +109,8 @@
                 emulated = true;
                 let iframe = document.createElement('iframe');
                 iframe.src = url;
-                iframe.width = "100%";
-                iframe.height = "100%";
+                iframe.width = window.innerWidth;
+                iframe.height = window.innerHeight;
                 document.body.appendChild(iframe);
                 iframe.onload = function () {
                     try {
