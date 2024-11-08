@@ -86,7 +86,7 @@
         
         async function emulate(url) {
             try {
-                const response = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
+                const response = await fetch(url, { method: 'HEAD' });
                 
                 if (!response.ok) {
                     // Check specific response status codes for tailored messages
