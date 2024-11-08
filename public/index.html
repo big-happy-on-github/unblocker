@@ -85,29 +85,34 @@
         let emulated = false;
         
         async function emulate(url) {
-            const response = await fetch(url, { method: 'HEAD' });
-            
-            if (!response.ok) {
-                alert(`${url} could not be loaded. Note: remember to use https:// before the site name`);
-                return;
-            }
-            
-            emulated = true;
-            let iframe = document.createElement('iframe');
-            iframe.src = url;
-            iframe.width = "100%";
-            iframe.height = "100%";
-            document.body.appendChild(iframe);
-            iframe.onload = function () {
-                try {
-                    const _ = iframe.contentWindow.location.href;
-                } catch {
-                    alert(`${url} does not allow emulating`);
+            try {
+                const response = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
+                
+                if (!response.ok) {
+                    alert(`${url} could not be loaded. Note: remember to use https:// before the site name`);
+                    return;
                 }
+                
+                emulated = true;
+                let iframe = document.createElement('iframe');
+                iframe.src = url;
+                iframe.width = "100%";
+                iframe.height = "100%";
+                document.body.appendChild(iframe);
+                iframe.onload = function () {
+                    try {
+                        const _ = iframe.contentWindow.location.href;
+                    } catch {
+                        alert(`${url} does not allow emulating`);
+                    }
+                }
+                document.getElementById("settings").style.display = "none";
+            } catch (error) {
+                console.error("Fetch failed: ", error);
+                alert("An error occurred while trying to load the site.");
             }
-            document.getElementById("settings").style.display = "none";
         }
-        
+
         document.addEventListener('keyup', function(event) {
             if (event.keyCode === 13 && emulated) {
                 event.preventDefault();
