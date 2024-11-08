@@ -92,6 +92,7 @@
             embed.height = window.innerHeight;
             document.body.appendChild(embed);
             document.getElementById("settings").style.display = "none";
+            document.title = `site emulator/${url}`;
         }
         
         document.addEventListener('keyup', function(event) {
